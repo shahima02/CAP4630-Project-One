@@ -1,3 +1,11 @@
+"""
+CAP4630: Project One
+Meer Hossain (documentation)
+#Abigail Denton (design)
+Remekie Rose (coding)
+June, 17, 2022
+"""
+
 from xml.etree.ElementPath import xpath_tokenizer_re
 from easyAI import TwoPlayerGame, Human_Player, AI_Player, Negamax
 from easyAI import solve_with_iterative_deepening
