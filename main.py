@@ -1,3 +1,4 @@
+from xml.etree.ElementPath import xpath_tokenizer_re
 from easyAI import TwoPlayerGame, Human_Player, AI_Player, Negamax
 from easyAI import solve_with_iterative_deepening
 import numpy as np
@@ -34,11 +35,8 @@ class Checker(TwoPlayerGame):
 
         self.white_territory = [(7,0), (7,2), (7,4), (7,6)]
         self.black_territory = [(0,1), (0,3), (0,5), (0,7)]
-
-
         self.players[0].pos = self.white_pieces
         self.players[1].pos = self.black_pieces
-
         self.current_player = 1  # player 1 starts.
 
     def possible_moves_on_white_turn(self):
@@ -56,7 +54,6 @@ class Checker(TwoPlayerGame):
         # get position of each move (list of all table position)
         for v in self.players[self.current_player-1].pos:
             old_piece_pos = v
-
             step_pos = [(v[0]-1, v[1]-1), (v[0]-1, v[1]+1)]
             # if no piece at step_pos, step
             # otherwise jump until no piece at next step_pos
@@ -86,8 +83,6 @@ class Checker(TwoPlayerGame):
             # print(b)
             table_pos.append(b)
             assert len(np.where(b != 0)[0]) == 16, f"In possible_moves_on_white_turn(), there are {len(np.where(b != 0)[0])} pieces on the board  \n {b}"
-
-
         self.board = board
         return table_pos
 
@@ -139,9 +134,6 @@ class Checker(TwoPlayerGame):
         return table_pos
 
     def possible_moves(self):
-        """
-        """
-
         if self.current_player == 2:
             return self.possible_moves_on_black_turn()
         else:
@@ -174,19 +166,33 @@ class Checker(TwoPlayerGame):
          [W,0,W,0,W,0,W,0]]
         ------
         """
-        pos = np.zeros((8,8),dtype=int)
-        pass
+        # code based on examples from easyAI
+        newpos1 = [] #self.get_piece_pos_from_table
+        newpos2 = [] #self.get_piece_pos_from_table 
+        for i in range(8): # 8x8 array
+            for j in range(8):
+                if pos[i,j] == "W": 
+                    x = (i, j) 
+                    newpos1.append(x)
+                    self.players[0].pos = newpos1
+                if pos[i,j] == "B": 
+                    x = (i,j) 
+                    newpos2.append(x)
+                    self.players[1].pos = newpos2
+                    
+        self.is_over
 
     def lose(self):
         """
         black lose if white piece is in black territory
-        white lose if black piece is in black territory
+        white lose if black piece is in white territory
         """
-        if "W" in self.black_territory:
-            self.possible_moves_on_black_turn() == []
-        elif "B" in self.white_territory:
-            self.possible_moves_on_white_turn() == []
-        pass
+        for i in range(8):
+            if self.board[7,i] == "B":
+                return 1
+        for i in range(8):
+            if self.board[0,i] == "W":
+                return 1
 
     def is_over(self):
         """
@@ -198,6 +204,7 @@ class Checker(TwoPlayerGame):
         """
         show 8*8 checker board.
         """
+
         # board position before move
         board = self.blank_board.copy()
         print(f"player 1 positions = {self.players[0].pos}")
